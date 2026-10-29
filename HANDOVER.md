@@ -1,6 +1,6 @@
 # EMS Technical Task — Handover
 
-**Owner:** Hossam Eleissawy | **Deadline: Fri Oct 30, 2026, EOD**
+**Owner:** Hossam Eleissawy 
 
 ## 0. How to work with Hossam
 - He must understand and explain every piece in the interview.
