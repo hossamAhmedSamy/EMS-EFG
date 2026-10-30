@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Description>All reserved slots with investor, presenter, hotel and room.</Description>
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="EMS">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString>Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=EMS</ConnectString>
+        <IntegratedSecurity>true</IntegratedSecurity>
+      </ConnectionProperties>
+      <rd:SecurityType>Integrated</rd:SecurityType>
+      <rd:DataSourceID>4f1b6a0e-2c7d-4b8e-9a31-5d6e7f8a9b01</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="Reservations">
+      <Query>
+        <DataSourceName>EMS</DataSourceName>
+        <CommandText>SELECT ReservationId, HotelName, RoomName, StartTime, EndTime, SectorName,
+       InvestorName, InvestorMobile, PresenterName, PresenterMobile
+FROM dbo.vw_ReservationReport
+ORDER BY StartTime, HotelName, RoomName;</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="ReservationId">
+          <DataField>ReservationId</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="HotelName">
+          <DataField>HotelName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="RoomName">
+          <DataField>RoomName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="StartTime">
+          <DataField>StartTime</DataField>
+          <rd:TypeName>System.TimeSpan</rd:TypeName>
+        </Field>
+        <Field Name="EndTime">
+          <DataField>EndTime</DataField>
+          <rd:TypeName>System.TimeSpan</rd:TypeName>
+        </Field>
+        <Field Name="SectorName">
+          <DataField>SectorName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="InvestorName">
+          <DataField>InvestorName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="InvestorMobile">
+          <DataField>InvestorMobile</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PresenterName">
+          <DataField>PresenterName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PresenterMobile">
+          <DataField>PresenterMobile</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+  <ReportSection>
+  <Body>
+    <ReportItems>
+      <Textbox Name="Title">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>Reservations report</Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                  <FontSize>18pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                  <Color>#0C2340</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <Top>0in</Top>
+        <Left>0in</Left>
+        <Height>0.4in</Height>
+        <Width>10in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+        </Style>
+      </Textbox>
+      <Textbox Name="Subtitle">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>="EFG Holding · EMS — all reserved slots (" &amp; CountRows("Reservations") &amp; " meetings)"</Value>
+                <Style>
+                  <FontFamily>Segoe UI</FontFamily>
+                  <FontSize>10pt</FontSize>
+                  <Color>#5D6878</Color>
+                </Style>
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <Top>0.4in</Top>
+        <Left>0in</Left>
+        <Height>0.25in</Height>
+        <Width>10in</Width>
+        <Style>
+          <PaddingLeft>2pt</PaddingLeft>
+        </Style>
+      </Textbox>
+      <Tablix Name="ReservationsTable">
+        <TablixBody>
+          <TablixColumns>
+            <TablixColumn><Width>1.35in</Width></TablixColumn>
+            <TablixColumn><Width>1.45in</Width></TablixColumn>
+            <TablixColumn><Width>1in</Width></TablixColumn>
+            <TablixColumn><Width>1in</Width></TablixColumn>
+            <TablixColumn><Width>1.35in</Width></TablixColumn>
+            <TablixColumn><Width>1.15in</Width></TablixColumn>
+            <TablixColumn><Width>1.35in</Width></TablixColumn>
+            <TablixColumn><Width>1.35in</Width></TablixColumn>
+          </TablixColumns>
+          <TablixRows>
+            <TablixRow>
+              <Height>0.32in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="hTime">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>TIME</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>8pt</FontSize><FontWeight>Bold</FontWeight><Color>White</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><BackgroundColor>#0C2340</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="hHotel">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>HOTEL</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>8pt</FontSize><FontWeight>Bold</FontWeight><Color>White</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><BackgroundColor>#0C2340</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="hRoom">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>ROOM</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>8pt</FontSize><FontWeight>Bold</FontWeight><Color>White</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><BackgroundColor>#0C2340</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="hSector">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>SECTOR</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>8pt</FontSize><FontWeight>Bold</FontWeight><Color>White</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><BackgroundColor>#0C2340</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="hInvestor">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>INVESTOR</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>8pt</FontSize><FontWeight>Bold</FontWeight><Color>White</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><BackgroundColor>#0C2340</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="hInvestorMobile">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>INVESTOR MOBILE</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>8pt</FontSize><FontWeight>Bold</FontWeight><Color>White</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><BackgroundColor>#0C2340</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="hPresenter">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>PRESENTER</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>8pt</FontSize><FontWeight>Bold</FontWeight><Color>White</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><BackgroundColor>#0C2340</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="hPresenterMobile">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>PRESENTER MOBILE</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>8pt</FontSize><FontWeight>Bold</FontWeight><Color>White</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><BackgroundColor>#0C2340</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.3in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="dTime">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>=Format(Today().Add(Fields!StartTime.Value), "h:mm tt") &amp; " – " &amp; Format(Today().Add(Fields!EndTime.Value), "h:mm tt")</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>9pt</FontSize><FontWeight>Bold</FontWeight><Color>#0C2340</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><Border><Style>None</Style></Border><BottomBorder><Color>#E2E7EE</Color><Style>Solid</Style><Width>1pt</Width></BottomBorder><BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "#F8FAFC", "White")</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight><PaddingTop>2pt</PaddingTop><PaddingBottom>2pt</PaddingBottom></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="dHotel">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!HotelName.Value</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>9pt</FontSize></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><Border><Style>None</Style></Border><BottomBorder><Color>#E2E7EE</Color><Style>Solid</Style><Width>1pt</Width></BottomBorder><BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "#F8FAFC", "White")</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight><PaddingTop>2pt</PaddingTop><PaddingBottom>2pt</PaddingBottom></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="dRoom">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!RoomName.Value</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>9pt</FontSize></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><Border><Style>None</Style></Border><BottomBorder><Color>#E2E7EE</Color><Style>Solid</Style><Width>1pt</Width></BottomBorder><BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "#F8FAFC", "White")</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight><PaddingTop>2pt</PaddingTop><PaddingBottom>2pt</PaddingBottom></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="dSector">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!SectorName.Value</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>9pt</FontSize></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><Border><Style>None</Style></Border><BottomBorder><Color>#E2E7EE</Color><Style>Solid</Style><Width>1pt</Width></BottomBorder><BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "#F8FAFC", "White")</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight><PaddingTop>2pt</PaddingTop><PaddingBottom>2pt</PaddingBottom></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="dInvestor">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!InvestorName.Value</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>9pt</FontSize></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><Border><Style>None</Style></Border><BottomBorder><Color>#E2E7EE</Color><Style>Solid</Style><Width>1pt</Width></BottomBorder><BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "#F8FAFC", "White")</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight><PaddingTop>2pt</PaddingTop><PaddingBottom>2pt</PaddingBottom></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="dInvestorMobile">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!InvestorMobile.Value</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>9pt</FontSize><Color>#5D6878</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><Border><Style>None</Style></Border><BottomBorder><Color>#E2E7EE</Color><Style>Solid</Style><Width>1pt</Width></BottomBorder><BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "#F8FAFC", "White")</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight><PaddingTop>2pt</PaddingTop><PaddingBottom>2pt</PaddingBottom></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="dPresenter">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!PresenterName.Value</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>9pt</FontSize></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><Border><Style>None</Style></Border><BottomBorder><Color>#E2E7EE</Color><Style>Solid</Style><Width>1pt</Width></BottomBorder><BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "#F8FAFC", "White")</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight><PaddingTop>2pt</PaddingTop><PaddingBottom>2pt</PaddingBottom></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="dPresenterMobile">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs><Paragraph><TextRuns><TextRun><Value>=Fields!PresenterMobile.Value</Value><Style><FontFamily>Segoe UI</FontFamily><FontSize>9pt</FontSize><Color>#5D6878</Color></Style></TextRun></TextRuns><Style /></Paragraph></Paragraphs>
+                      <Style><Border><Style>None</Style></Border><BottomBorder><Color>#E2E7EE</Color><Style>Solid</Style><Width>1pt</Width></BottomBorder><BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 = 0, "#F8FAFC", "White")</BackgroundColor><VerticalAlign>Middle</VerticalAlign><PaddingLeft>6pt</PaddingLeft><PaddingRight>4pt</PaddingRight><PaddingTop>2pt</PaddingTop><PaddingBottom>2pt</PaddingBottom></Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+              </TablixCells>
+            </TablixRow>
+          </TablixRows>
+        </TablixBody>
+        <TablixColumnHierarchy>
+          <TablixMembers>
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+            <TablixMember />
+          </TablixMembers>
+        </TablixColumnHierarchy>
+        <TablixRowHierarchy>
+          <TablixMembers>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+            </TablixMember>
+            <TablixMember>
+              <Group Name="Details" />
+            </TablixMember>
+          </TablixMembers>
+        </TablixRowHierarchy>
+        <DataSetName>Reservations</DataSetName>
+        <NoRowsMessage>No reservations yet.</NoRowsMessage>
+        <Top>0.8in</Top>
+        <Left>0in</Left>
+        <Height>0.62in</Height>
+        <Width>10in</Width>
+        <Style>
+          <FontFamily>Segoe UI</FontFamily>
+          <FontSize>9pt</FontSize>
+          <Color>#5D6878</Color>
+        </Style>
+      </Tablix>
+    </ReportItems>
+    <Height>1.5in</Height>
+    <Style />
+  </Body>
+  <Width>10in</Width>
+  <Page>
+    <PageFooter>
+      <Height>0.35in</Height>
+      <PrintOnFirstPage>true</PrintOnFirstPage>
+      <PrintOnLastPage>true</PrintOnLastPage>
+      <ReportItems>
+        <Textbox Name="FooterLeft">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>="Generated " &amp; Format(Globals!ExecutionTime, "dd MMM yyyy h:mm tt") &amp; " · Internal use only"</Value>
+                  <Style>
+                    <FontFamily>Segoe UI</FontFamily>
+                    <FontSize>8pt</FontSize>
+                    <Color>#5D6878</Color>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style />
+            </Paragraph>
+          </Paragraphs>
+          <Top>0.08in</Top>
+          <Left>0in</Left>
+          <Height>0.22in</Height>
+          <Width>6in</Width>
+          <Style />
+        </Textbox>
+        <Textbox Name="FooterRight">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>="Page " &amp; Globals!PageNumber &amp; " of " &amp; Globals!TotalPages</Value>
+                  <Style>
+                    <FontFamily>Segoe UI</FontFamily>
+                    <FontSize>8pt</FontSize>
+                    <Color>#5D6878</Color>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Right</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <Top>0.08in</Top>
+          <Left>7in</Left>
+          <Height>0.22in</Height>
+          <Width>3in</Width>
+          <Style />
+        </Textbox>
+      </ReportItems>
+      <Style>
+        <Border>
+          <Style>None</Style>
+        </Border>
+        <TopBorder>
+          <Color>#B48C5A</Color>
+          <Style>Solid</Style>
+          <Width>1pt</Width>
+        </TopBorder>
+      </Style>
+    </PageFooter>
+    <PageHeight>8.5in</PageHeight>
+    <PageWidth>11in</PageWidth>
+    <LeftMargin>0.5in</LeftMargin>
+    <RightMargin>0.5in</RightMargin>
+    <TopMargin>0.5in</TopMargin>
+    <BottomMargin>0.5in</BottomMargin>
+    <Style />
+  </Page>
+  </ReportSection>
+  </ReportSections>
+  <Language>en-US</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>8c2e4d6f-1a3b-4c5d-9e7f-0a1b2c3d4e5f</rd:ReportID>
+</Report>

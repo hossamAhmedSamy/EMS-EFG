@@ -1,0 +1,2 @@
+# The SSIS flat file connection expects Windows (CRLF) line endings.
+*.csv text eol=crlf

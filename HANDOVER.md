@@ -38,8 +38,13 @@ Deployment does not matter (confirmed with interviewer).
 | Hotel columns | Name (unique) + optional Address -> CSV `Hilton,Nile Corniche Cairo` |
 | Seed sectors | Finance, IT, Restaurants, Retail, Real Estate |
 | Double booking | Service overlap check (real logic) + DB unique indexes (backstop) |
-
-Still open: reservation page interaction (leaning full page posts), SSIS duplicates (leaning skip by name).
+| Slots in a room | Never overlap each other (touching is fine: 1-2 and 2-3) |
+| Time windows | Several windows per sector allowed (e.g. 2-3 and 4-6), but not overlapping within the same sector |
+| Reservation | Stores SectorId too; FKs are Restrict, so anything with a booking can't be deleted |
+| Edits/deletes | Blocked when an existing reservation depends on it (cancel the reservation first) |
+| Reservation page | Plain GET steps (investor -> sector -> time) + POST to confirm; everything re-checked at confirm in a serializable transaction |
+| SSIS duplicates | Skip by name: CSVs -> staging table -> one INSERT ... WHERE NOT EXISTS; re-running adds nothing |
+| UI | Bootstrap 5 + EFG-style navy/gold theme (site.css); logo shows when `wwwroot/images/logo.svg` exists |
 
 ## 3. Data model
 Sector, Hotel, Room, RoomSlot, Investor, Presenter, InvestorInterest, PresenterInterest, Reservation.
@@ -52,10 +57,10 @@ Report view `vw_ReservationReport` (raw SQL migration) for SSRS.
 
 ## 5. Build plan
 1. ✅ Environment
-2. Scaffold + entities + migration
-3. Hotel page (rooms, slot generator, remove slots)
-4. Investor + Presenter pages
-5. MatchingService + tests
-6. Reservation page
-7. SSIS package + SSRS report
-8. README + GitHub repo
+2. ✅ Scaffold + entities + migration
+3. ✅ Hotel page (rooms, slot generator, remove slots)
+4. ✅ Investor + Presenter pages
+5. ✅ MatchingService + tests (21 xUnit tests, `dotnet test EMS.Tests`)
+6. ✅ Reservation page
+7. ✅ SSIS package (`SSIS/LoadHotels.dtsx`, run with dtexec) + SSRS report (`SSRS/ReservationsReport.rdl`, schema-validated; preview in VS)
+8. ✅ README; push to GitHub is Hossam's step
