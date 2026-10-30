@@ -1,28 +1,38 @@
 @model EMS.Models.PresenterInterest
 @{
-    ViewData["Title"] = "Edit Time Window";
+    ViewData["Title"] = "Edit time window";
 }
 
-<p><a asp-action="Manage" asp-route-id="@Model.PresenterId">&larr; Back to @Model.Presenter!.Name</a></p>
-<h1>Edit Time Window</h1>
-<p class="text-muted">@Model.Presenter!.Name — @Model.Sector!.Name</p>
-
-@if (ViewData["Error"] is string error)
-{
-    <div class="alert alert-danger">@error</div>
-}
-
-<form asp-action="EditInterest" asp-route-id="@Model.Id" method="post" class="row g-2 align-items-end">
-    <div class="col-auto">
-        <label class="form-label" for="from">From</label>
-        <input type="time" class="form-control" id="from" name="from" value="@Model.StartTime.ToString("HH:mm")" required />
+<div class="ems-page-header">
+    <div>
+        <div class="ems-breadcrumb"><a asp-action="Index">Presenters</a> / <a asp-action="Manage" asp-route-id="@Model.PresenterId">@Model.Presenter!.Name</a> / Edit time window</div>
+        <h1>Edit time window</h1>
+        <p class="ems-subtitle">@Model.Presenter!.Name · @Model.Sector!.Name</p>
     </div>
-    <div class="col-auto">
-        <label class="form-label" for="to">To</label>
-        <input type="time" class="form-control" id="to" name="to" value="@Model.EndTime.ToString("HH:mm")" required />
+</div>
+
+<form asp-action="EditInterest" asp-route-id="@Model.Id" method="post" class="ems-card ems-form-card">
+    <div class="ems-card-body">
+        @if (ViewData["Error"] is string error)
+        {
+            <div class="alert alert-danger" role="alert">
+                <partial name="_Icon" model="@("error")" />
+                <div class="ems-alert-text">@error</div>
+            </div>
+        }
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <label class="form-label" for="from">From</label>
+                <input type="time" class="form-control" id="from" name="from" value="@Model.StartTime.ToString("HH:mm")" required />
+            </div>
+            <div class="col-sm-6">
+                <label class="form-label" for="to">To</label>
+                <input type="time" class="form-control" id="to" name="to" value="@Model.EndTime.ToString("HH:mm")" required />
+            </div>
+        </div>
     </div>
-    <div class="col-auto">
+    <div class="ems-card-footer d-flex gap-3 align-items-center">
         <button type="submit" class="btn btn-primary">Save</button>
-        <a asp-action="Manage" asp-route-id="@Model.PresenterId" class="btn btn-secondary">Cancel</a>
+        <a asp-action="Manage" asp-route-id="@Model.PresenterId" class="btn btn-link">Cancel</a>
     </div>
 </form>

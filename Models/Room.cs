@@ -6,7 +6,8 @@ public class Room
 {
     public int Id { get; set; }
 
-    [Required, StringLength(50)]
+    [Required(ErrorMessage = "Room name is required.")]
+    [StringLength(50, ErrorMessage = "Room name can be at most 50 characters.")]
     public string Name { get; set; } = string.Empty;
 
     public int HotelId { get; set; }

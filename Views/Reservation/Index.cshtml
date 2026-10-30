@@ -3,49 +3,56 @@
     ViewData["Title"] = "Reservations";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="mb-0">Reservations</h1>
-    <a asp-action="Create" class="btn btn-primary">New Reservation</a>
+<div class="ems-page-header">
+    <div>
+        <h1>Reservations</h1>
+        <p class="ems-subtitle">Every confirmed meeting. Cancelling frees the room, investor and presenter.</p>
+    </div>
+    <div class="ems-page-actions">
+        <a asp-action="Create" class="btn btn-primary btn-lg">+ New reservation</a>
+    </div>
 </div>
 
 <partial name="_StatusMessages" />
 
-@if (!Model.Any())
-{
-    <p class="text-muted">No reservations yet.</p>
-}
-else
-{
-    <table class="table align-middle">
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Hotel</th>
-                <th>Room</th>
-                <th>Sector</th>
-                <th>Investor</th>
-                <th>Presenter</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var r in Model)
-        {
-            <tr>
-                <td>@r.StartTime.ToString("h:mm tt") – @r.EndTime.ToString("h:mm tt")</td>
-                <td>@r.RoomSlot!.Room!.Hotel!.Name</td>
-                <td>@r.RoomSlot!.Room!.Name</td>
-                <td>@r.Sector!.Name</td>
-                <td>@r.Investor!.Name</td>
-                <td>@r.Presenter!.Name</td>
-                <td class="text-end">
-                    <form asp-action="Cancel" asp-route-id="@r.Id" method="post"
-                          onsubmit="return confirm('Cancel this reservation?');">
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
-                    </form>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+<div class="ems-card">
+    @if (!Model.Any())
+    {
+        <div class="ems-card-body text-muted">No reservations yet.</div>
+    }
+    else
+    {
+        <table class="table ems-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Hotel</th>
+                    <th>Room</th>
+                    <th>Sector</th>
+                    <th>Investor</th>
+                    <th>Presenter</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td class="ems-name text-nowrap">@r.StartTime.ToString("h:mm tt") – @r.EndTime.ToString("h:mm tt")</td>
+                    <td>@r.RoomSlot!.Room!.Hotel!.Name</td>
+                    <td>@r.RoomSlot!.Room!.Name</td>
+                    <td><span class="ems-chip">@r.Sector!.Name</span></td>
+                    <td>@r.Investor!.Name</td>
+                    <td>@r.Presenter!.Name</td>
+                    <td class="ems-actions">
+                        <form asp-action="Cancel" asp-route-id="@r.Id" method="post"
+                              onsubmit="return confirm('Cancel this reservation?');">
+                            <button type="submit" class="btn btn-outline-danger">Cancel</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>

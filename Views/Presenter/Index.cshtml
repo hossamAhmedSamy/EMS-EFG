@@ -3,47 +3,56 @@
     ViewData["Title"] = "Presenters";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="mb-0">Presenters</h1>
-    <a asp-action="Create" class="btn btn-primary">Add Presenter</a>
+<div class="ems-page-header">
+    <div>
+        <h1>Presenters</h1>
+        <p class="ems-subtitle">Company presenters, the sectors they pitch in and the hours they can present.</p>
+    </div>
+    <div class="ems-page-actions">
+        <a asp-action="Create" class="btn btn-primary btn-lg">+ Add presenter</a>
+    </div>
 </div>
 
 <partial name="_StatusMessages" />
 
-@if (!Model.Any())
-{
-    <p class="text-muted">No presenters yet.</p>
-}
-else
-{
-    <table class="table align-middle">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Mobile</th>
-                <th>Sectors &amp; availability</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        @foreach (var presenter in Model)
-        {
-            <tr>
-                <td>@presenter.Name</td>
-                <td>@presenter.Mobile</td>
-                <td>
-                    @foreach (var interest in presenter.Interests.OrderBy(x => x.Sector!.Name).ThenBy(x => x.StartTime))
-                    {
-                        <span class="badge text-bg-light border me-1">
-                            @interest.Sector!.Name: @interest.StartTime.ToString("h:mm tt") – @interest.EndTime.ToString("h:mm tt")
-                        </span>
-                    }
-                </td>
-                <td class="text-end">
-                    <a asp-action="Manage" asp-route-id="@presenter.Id" class="btn btn-sm btn-outline-primary">Manage sectors</a>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+<div class="ems-card">
+    @if (!Model.Any())
+    {
+        <div class="ems-card-body text-muted">No presenters yet. Add the first one.</div>
+    }
+    else
+    {
+        <table class="table ems-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Sectors &amp; availability</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var presenter in Model)
+            {
+                <tr>
+                    <td class="ems-name">@presenter.Name</td>
+                    <td class="text-nowrap">@presenter.Mobile</td>
+                    <td>
+                        @if (!presenter.Interests.Any())
+                        {
+                            <span class="text-muted">No sectors yet</span>
+                        }
+                        @foreach (var interest in presenter.Interests.OrderBy(x => x.Sector!.Name).ThenBy(x => x.StartTime))
+                        {
+                            <span class="ems-chip"><strong>@interest.Sector!.Name:</strong> @interest.StartTime.ToString("h:mm tt") – @interest.EndTime.ToString("h:mm tt")</span>
+                        }
+                    </td>
+                    <td class="ems-actions">
+                        <a asp-action="Manage" asp-route-id="@presenter.Id" class="btn btn-outline-secondary">Manage</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+</div>

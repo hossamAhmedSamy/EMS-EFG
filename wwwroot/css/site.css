@@ -1,31 +1,560 @@
-html {
-  font-size: 14px;
+/* EMS theme: EFG-style navy + gold on top of Bootstrap 5.3. Only overrides/extends Bootstrap. */
+
+:root {
+  --ems-navy: #0c2340;
+  --ems-navy-hover: #183a66;
+  --ems-navy-active: #081a30;
+  --ems-gold: #b48c5a;
+  --ems-bg: #f4f6f9;
+  --ems-surface: #ffffff;
+  --ems-surface-muted: #f8fafc;
+  --ems-border: #e2e7ee;
+  --ems-border-strong: #c9d1dc;
+  --ems-text: #1b2533;
+  --ems-muted: #5d6878;
+  --ems-chip: #ebf0f6;
+  --ems-chip-border: #d5dfeb;
+  --ems-danger: #b42318;
+  --ems-heading-font: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --bs-body-font-family: "Noto Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --bs-body-color: var(--ems-text);
+  --bs-body-bg: var(--ems-bg);
+  --bs-border-color: var(--ems-border);
+  --bs-link-color: #1f5fa8;
+  --bs-link-color-rgb: 31, 95, 168;
+  --bs-link-hover-color: var(--ems-navy);
+  --bs-link-hover-color-rgb: 12, 35, 64;
+  --bs-secondary-color: var(--ems-muted);
+  --bs-border-radius: .5rem;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
+/* ---------- Page shell ---------- */
 
 body {
-  margin-bottom: 60px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
+.ems-main {
+  flex: 1 0 auto;
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+
+h1, h2, h3, h4, h5, h6, .ems-heading {
+  font-family: var(--ems-heading-font);
+  color: var(--ems-navy);
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 2.25rem;
+  letter-spacing: -.01em;
+}
+
+/* ---------- Navbar ---------- */
+
+.ems-navbar {
+  background: var(--ems-navy);
+  border-bottom: 3px solid var(--ems-gold);
+  padding: 0;
+}
+
+.ems-navbar .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: .9rem 0;
+  color: #fff;
+}
+
+.ems-logo {
+  height: 32px;
+  width: auto;
+}
+
+.ems-wordmark {
+  font-family: var(--ems-heading-font);
+  font-weight: 600;
+  font-size: .8rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .85);
+}
+
+.ems-brand-divider {
+  width: 1px;
+  height: 2rem;
+  background: rgba(255, 255, 255, .25);
+}
+
+.ems-brand-name {
+  font-family: var(--ems-heading-font);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: .08em;
+}
+
+.ems-navbar .nav-link {
+  font-family: var(--ems-heading-font);
+  font-weight: 500;
+  color: rgba(255, 255, 255, .78);
+  padding: 1.6rem 1.1rem 1.45rem !important;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+}
+
+.ems-navbar .nav-link:hover,
+.ems-navbar .nav-link:focus {
+  color: #fff;
+}
+
+.ems-navbar .nav-link.active {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+.ems-navbar-tagline {
+  color: rgba(255, 255, 255, .8);
+  font-size: .9rem;
+}
+
+.ems-navbar .navbar-toggler {
+  border-color: rgba(255, 255, 255, .35);
+}
+
+.ems-navbar .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* ---------- Footer ---------- */
+
+.ems-footer {
+  flex-shrink: 0;
+  background: var(--ems-surface);
+  border-top: 1px solid var(--ems-border);
+  color: var(--ems-muted);
+  font-size: .9rem;
+  padding: 1.25rem 0;
+}
+
+/* ---------- Page header + breadcrumb ---------- */
+
+.ems-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.75rem;
+}
+
+.ems-page-header h1 {
+  margin-bottom: .25rem;
+}
+
+.ems-page-header .ems-subtitle {
+  color: var(--ems-muted);
+  margin-bottom: 0;
+}
+
+.ems-page-actions {
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  margin-top: .35rem;
+}
+
+.ems-breadcrumb {
+  font-size: .95rem;
+  color: var(--ems-muted);
+  margin-bottom: .35rem;
+}
+
+.ems-breadcrumb a {
+  text-decoration: none;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  font-family: var(--ems-heading-font);
+  font-weight: 600;
+  --bs-btn-padding-x: 1rem;
+  --bs-btn-padding-y: .5rem;
+}
+
+.btn-lg {
+  --bs-btn-padding-x: 1.4rem;
+}
+
+/* Same height as a .form-control, for buttons sitting next to inputs. */
+.btn-input-height {
+  --bs-btn-padding-y: .6rem;
+}
+
+.ems-bg-muted {
+  background: var(--ems-surface-muted);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--ems-navy);
+  --bs-btn-border-color: var(--ems-navy);
+  --bs-btn-hover-bg: var(--ems-navy-hover);
+  --bs-btn-hover-border-color: var(--ems-navy-hover);
+  --bs-btn-active-bg: var(--ems-navy-active);
+  --bs-btn-active-border-color: var(--ems-navy-active);
+  --bs-btn-disabled-bg: var(--ems-navy);
+  --bs-btn-disabled-border-color: var(--ems-navy);
+  --bs-btn-focus-shadow-rgb: 12, 35, 64;
+}
+
+.btn-outline-secondary {
+  --bs-btn-color: var(--ems-navy);
+  --bs-btn-bg: var(--ems-surface);
+  --bs-btn-border-color: var(--ems-border-strong);
+  --bs-btn-hover-color: var(--ems-navy);
+  --bs-btn-hover-bg: #eef2f7;
+  --bs-btn-hover-border-color: #b8c2cf;
+  --bs-btn-active-color: var(--ems-navy);
+  --bs-btn-active-bg: #e3e9f1;
+  --bs-btn-active-border-color: #b8c2cf;
+}
+
+.btn-outline-danger {
+  --bs-btn-color: var(--ems-danger);
+  --bs-btn-bg: var(--ems-surface);
+  --bs-btn-border-color: #f0c2bd;
+  --bs-btn-hover-color: var(--ems-danger);
+  --bs-btn-hover-bg: #fdecea;
+  --bs-btn-hover-border-color: #e8a59d;
+  --bs-btn-active-color: var(--ems-danger);
+  --bs-btn-active-bg: #fadad6;
+  --bs-btn-active-border-color: #e8a59d;
+}
+
+.btn-link {
+  --bs-btn-color: var(--ems-muted);
+  --bs-btn-hover-color: var(--ems-navy);
+  font-weight: 500;
+}
+
+/* ---------- Cards / panels ---------- */
+
+.ems-card {
+  background: var(--ems-surface);
+  border: 1px solid var(--ems-border);
+  border-radius: .75rem;
+  box-shadow: 0 1px 2px rgba(12, 35, 64, .04);
+  overflow: hidden; /* keeps table header corners inside the rounded card */
+}
+
+.ems-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--ems-border);
+}
+
+.ems-card-header h2,
+.ems-card-title {
+  font-family: var(--ems-heading-font);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ems-navy);
+  margin: 0;
+}
+
+.ems-card-body {
+  padding: 1.5rem;
+}
+
+.ems-card-footer {
+  padding: 1.1rem 1.5rem;
+  background: var(--ems-surface-muted);
+  border-top: 1px solid var(--ems-border);
+  border-radius: 0 0 .75rem .75rem;
+}
+
+.ems-card-accent {
+  border-top: 3px solid var(--ems-gold);
+}
+
+/* Home page tiles */
+.ems-tile {
+  height: 100%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.ems-tile h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.ems-tile p {
+  color: var(--ems-muted);
+  flex: 1;
+}
+
+/* ---------- Tables ---------- */
+
+.ems-table {
+  margin: 0;
+  --bs-table-bg: transparent;
+}
+
+.ems-table thead th {
+  font-family: var(--ems-heading-font);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ems-muted);
+  background: var(--ems-surface-muted);
+  border-bottom: 1px solid var(--ems-border);
+  padding: 1rem 1.5rem;
+}
+
+.ems-table tbody td {
+  padding: 1rem 1.5rem;
+  vertical-align: middle;
+  border-color: var(--ems-border);
+}
+
+.ems-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ems-table .ems-name {
+  font-weight: 600;
+}
+
+.ems-table .ems-actions {
   text-align: end;
+  white-space: nowrap;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* ---------- Chips (sector windows, room slots) ---------- */
+
+.ems-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .65rem;
+  margin: .15rem .3rem .15rem 0;
+  background: var(--ems-chip);
+  border: 1px solid var(--ems-chip-border);
+  border-radius: .4rem;
+  font-size: .88rem;
+  color: var(--ems-navy);
+  white-space: nowrap;
+}
+
+.ems-chip strong {
+  font-weight: 700;
+}
+
+.ems-slot-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ems-slot {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .45rem .55rem .45rem 1rem;
+  background: var(--ems-chip);
+  border: 1px solid var(--ems-chip-border);
+  border-radius: 999px;
+  color: var(--ems-navy);
+  font-size: .95rem;
+}
+
+.ems-slot-reserved {
+  background: var(--ems-surface);
+  border-style: dashed;
+  padding-right: .45rem;
+}
+
+.ems-slot-remove {
+  border: 0;
+  background: none;
+  padding: 0 .25rem;
+  line-height: 1;
+  color: var(--ems-muted);
+  font-size: 1.25rem;
+}
+
+.ems-slot-remove:hover {
+  color: var(--ems-danger);
+}
+
+.ems-badge-reserved {
+  background: var(--ems-navy);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 600;
+  padding: .3rem .55rem;
+  border-radius: .35rem;
+}
+
+.ems-badge-ok {
+  background: #e3f4ea;
+  color: #1e7a46;
+  font-size: .78rem;
+  font-weight: 600;
+  padding: .3rem .6rem;
+  border-radius: .35rem;
+}
+
+.ems-add-room {
+  border: 1px dashed var(--ems-border-strong);
+  border-radius: .75rem;
+  background: transparent;
+}
+
+/* ---------- Alerts ---------- */
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  border: 0;
+  border-radius: .6rem;
+  padding: 1rem 1.25rem;
+}
+
+.alert .ems-alert-icon {
+  flex-shrink: 0;
+  margin-top: .15rem;
+}
+
+.alert .ems-alert-text {
+  flex: 1;
+}
+
+.alert .btn-close {
+  position: static;
+  padding: .25rem;
+  margin-left: auto;
+}
+
+.alert-success {
+  --bs-alert-bg: #e8f5ee;
+  --bs-alert-color: #1e7a46;
+}
+
+.alert-danger {
+  --bs-alert-bg: #fdecea;
+  --bs-alert-color: var(--ems-danger);
+}
+
+.alert-warning {
+  --bs-alert-bg: #fff4e0;
+  --bs-alert-color: #8a5a00;
+}
+
+.alert-warning a {
+  color: inherit;
+  font-weight: 700;
+}
+
+/* ---------- Forms ---------- */
+
+.form-label {
+  font-weight: 600;
+  color: var(--ems-navy);
+  font-size: .95rem;
+}
+
+.form-control,
+.form-select {
+  border-color: var(--ems-border-strong);
+  padding-top: .6rem;
+  padding-bottom: .6rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--ems-navy);
+  box-shadow: 0 0 0 .2rem rgba(12, 35, 64, .12);
+}
+
+.form-select:disabled,
+.form-control:disabled {
+  background-color: #eef1f5;
+  color: var(--ems-muted);
+}
+
+/* ASP.NET adds these classes on validation errors (server and client side). */
+.input-validation-error {
+  border-color: var(--ems-danger) !important;
+  padding-right: calc(1.5em + .75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23b42318'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23b42318' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(.375em + .1875rem) center;
+  background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+
+.field-validation-error {
+  display: block;
+  color: var(--ems-danger);
+  font-size: .9rem;
+  margin-top: .35rem;
+}
+
+.ems-form-card {
+  max-width: 44rem;
+}
+
+/* ---------- Reservation steps ---------- */
+
+.ems-step-label {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  font-weight: 600;
+  color: var(--ems-navy);
+  margin-bottom: .5rem;
+}
+
+.ems-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--ems-navy);
+  color: #fff;
+  font-family: var(--ems-heading-font);
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.ems-step-disabled .ems-step-number {
+  background: #d4dae3;
+  color: var(--ems-navy);
+}
+
+.ems-summary dt {
+  font-weight: 400;
+  color: var(--ems-muted);
+}
+
+.ems-summary dd {
+  font-weight: 600;
+  color: var(--ems-navy);
+  font-size: 1.05rem;
 }

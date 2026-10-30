@@ -1,13 +1,35 @@
 ﻿@{
     ViewData["Title"] = "Home";
+    var tiles = new[]
+    {
+        (Title: "Hotels", Text: "Hotels, their conference rooms and the hourly slots each room offers.", Controller: "Hotel", Button: "Open hotels"),
+        (Title: "Investors", Text: "Investors and the sectors and time windows they are available for.", Controller: "Investor", Button: "Open investors"),
+        (Title: "Presenters", Text: "Company presenters, their sector and the hours they can present.", Controller: "Presenter", Button: "Open presenters"),
+        (Title: "Reservations", Text: "Match an investor with a presenter and a free room slot.", Controller: "Reservation", Button: "Open reservations"),
+    };
 }
 
-<h1 class="mb-3">Event Management System</h1>
-<p class="lead">Match presenters with investors in the same sector, at a time both are free, in an available hotel room.</p>
+<div class="ems-page-header">
+    <div>
+        <h1>Welcome to EMS</h1>
+        <p class="ems-subtitle">Schedule 1-hour meetings between EFG presenters and investors in hotel conference rooms.</p>
+    </div>
+    <div class="ems-page-actions">
+        <a asp-controller="Reservation" asp-action="Create" class="btn btn-primary btn-lg">New reservation</a>
+    </div>
+</div>
 
-<div class="list-group col-md-6">
-    <a asp-controller="Hotel" asp-action="Index" class="list-group-item list-group-item-action">Hotels, rooms &amp; time slots</a>
-    <a asp-controller="Investor" asp-action="Index" class="list-group-item list-group-item-action">Investors</a>
-    <a asp-controller="Presenter" asp-action="Index" class="list-group-item list-group-item-action">Presenters</a>
-    <a asp-controller="Reservation" asp-action="Index" class="list-group-item list-group-item-action">Reservations</a>
+<div class="row g-4">
+    @foreach (var tile in tiles)
+    {
+        <div class="col-md-6 col-xl-3">
+            <div class="ems-card ems-tile">
+                <h2>@tile.Title</h2>
+                <p>@tile.Text</p>
+                <div>
+                    <a asp-controller="@tile.Controller" asp-action="Index" class="btn btn-outline-secondary">@tile.Button</a>
+                </div>
+            </div>
+        </div>
+    }
 </div>

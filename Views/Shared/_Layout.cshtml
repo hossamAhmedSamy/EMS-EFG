@@ -1,53 +1,67 @@
-﻿<!DOCTYPE html>
+﻿@inject IWebHostEnvironment Env
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    string NavClass(string controller) => controller == currentController ? "nav-link active" : "nav-link";
+    var hasLogo = System.IO.File.Exists(System.IO.Path.Combine(Env.WebRootPath, "images", "logo.svg"));
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - EMS</title>
-    <script type="importmap"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Noto+Sans:wght@400;600;700&display=swap" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/EMS.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EMS</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg ems-navbar">
+            <div class="container-xl">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    @if (hasLogo)
+                    {
+                        <img src="~/images/logo.svg" alt="EFG Holding" class="ems-logo" />
+                    }
+                    else
+                    {
+                        <span class="ems-wordmark">EFG Holding</span>
+                    }
+                    <span class="ems-brand-divider"></span>
+                    <span class="ems-brand-name">EMS</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Hotel" asp-action="Index">Hotels</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Investor" asp-action="Index">Investors</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Presenter" asp-action="Index">Presenters</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservation" asp-action="Index">Reservations</a>
-                        </li>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-lg-4">
+                        <li class="nav-item"><a class="@NavClass("Hotel")" asp-controller="Hotel" asp-action="Index">Hotels</a></li>
+                        <li class="nav-item"><a class="@NavClass("Investor")" asp-controller="Investor" asp-action="Index">Investors</a></li>
+                        <li class="nav-item"><a class="@NavClass("Presenter")" asp-controller="Presenter" asp-action="Index">Presenters</a></li>
+                        <li class="nav-item"><a class="@NavClass("Reservation")" asp-controller="Reservation" asp-action="Index">Reservations</a></li>
                     </ul>
+                    <span class="ms-auto ems-navbar-tagline d-none d-lg-inline">Event Management System</span>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - EMS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <main role="main" class="ems-main">
+        <div class="container-xl">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="ems-footer">
+        <div class="container-xl d-flex justify-content-between flex-wrap gap-2">
+            <span>&copy; @DateTime.Now.Year EFG Holding &middot; EMS – Event Management System</span>
+            <span>Internal use only</span>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

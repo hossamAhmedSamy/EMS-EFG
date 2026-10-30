@@ -1,0 +1,22 @@
+@model string
+@* Small inline icons for alerts; stroke uses the alert's text colour. *@
+<svg class="ems-alert-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    @switch (Model)
+    {
+        case "check":
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12.5l2.5 2.5L16 9.5" />
+            break;
+        case "warning":
+            <path d="M12 3l10 18H2z" />
+            <path d="M12 10v5" />
+            <path d="M12 18h.01" />
+            break;
+        default:
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 7v6" />
+            <path d="M12 16.5h.01" />
+            break;
+    }
+</svg>
