@@ -1,8 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 class="mb-3">Event Management System</h1>
+<p class="lead">Match presenters with investors in the same sector, at a time both are free, in an available hotel room.</p>
+
+<div class="list-group col-md-6">
+    <a asp-controller="Hotel" asp-action="Index" class="list-group-item list-group-item-action">Hotels, rooms &amp; time slots</a>
+    <a asp-controller="Investor" asp-action="Index" class="list-group-item list-group-item-action">Investors</a>
+    <a asp-controller="Presenter" asp-action="Index" class="list-group-item list-group-item-action">Presenters</a>
+    <a asp-controller="Reservation" asp-action="Index" class="list-group-item list-group-item-action">Reservations</a>
 </div>

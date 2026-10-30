@@ -14,4 +14,7 @@ public class Reservation
 
     public int PresenterId { get; set; }
     public Presenter? Presenter { get; set; }
+
+    public int SectorId { get; set; }
+    public Sector? Sector { get; set; }
 }

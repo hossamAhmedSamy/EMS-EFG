@@ -15,4 +15,12 @@
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
   </ItemGroup>
 
+  <!-- The test project lives in a subfolder; keep its files out of the web project. -->
+  <ItemGroup>
+    <Compile Remove="EMS.Tests/**" />
+    <Content Remove="EMS.Tests/**" />
+    <None Remove="EMS.Tests/**" />
+    <EmbeddedResource Remove="EMS.Tests/**" />
+  </ItemGroup>
+
 </Project>

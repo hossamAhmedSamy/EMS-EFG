@@ -31,11 +31,13 @@ namespace EMS.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -55,11 +57,13 @@ namespace EMS.Migrations
 
                     b.Property<string>("Mobile")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -105,11 +109,13 @@ namespace EMS.Migrations
 
                     b.Property<string>("Mobile")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -165,6 +171,9 @@ namespace EMS.Migrations
                     b.Property<int>("RoomSlotId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SectorId")
+                        .HasColumnType("int");
+
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time");
 
@@ -176,6 +185,8 @@ namespace EMS.Migrations
 
                     b.HasIndex("RoomSlotId")
                         .IsUnique();
+
+                    b.HasIndex("SectorId");
 
                     b.ToTable("Reservations");
                 });
@@ -193,11 +204,13 @@ namespace EMS.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HotelId");
+                    b.HasIndex("HotelId", "Name")
+                        .IsUnique();
 
                     b.ToTable("Rooms");
                 });
@@ -236,11 +249,42 @@ namespace EMS.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("Sectors");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Finance"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "IT"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Restaurants"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Retail"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Real Estate"
+                        });
                 });
 
             modelBuilder.Entity("EMS.Models.InvestorInterest", b =>
@@ -286,19 +330,25 @@ namespace EMS.Migrations
                     b.HasOne("EMS.Models.Investor", "Investor")
                         .WithMany()
                         .HasForeignKey("InvestorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EMS.Models.Presenter", "Presenter")
                         .WithMany()
                         .HasForeignKey("PresenterId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EMS.Models.RoomSlot", "RoomSlot")
                         .WithMany()
                         .HasForeignKey("RoomSlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EMS.Models.Sector", "Sector")
+                        .WithMany()
+                        .HasForeignKey("SectorId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Investor");
@@ -306,6 +356,8 @@ namespace EMS.Migrations
                     b.Navigation("Presenter");
 
                     b.Navigation("RoomSlot");
+
+                    b.Navigation("Sector");
                 });
 
             modelBuilder.Entity("EMS.Models.Room", b =>

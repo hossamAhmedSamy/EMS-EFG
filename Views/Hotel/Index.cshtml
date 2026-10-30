@@ -1,0 +1,42 @@
+@model IEnumerable<EMS.Models.Hotel>
+@{
+    ViewData["Title"] = "Hotels";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Hotels</h1>
+    <a asp-action="Create" class="btn btn-primary">Add Hotel</a>
+</div>
+
+<partial name="_StatusMessages" />
+
+@if (!Model.Any())
+{
+    <p class="text-muted">No hotels yet.</p>
+}
+else
+{
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Rooms</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var hotel in Model)
+        {
+            <tr>
+                <td>@hotel.Name</td>
+                <td>@hotel.Address</td>
+                <td>@hotel.Rooms.Count</td>
+                <td class="text-end">
+                    <a asp-action="Manage" asp-route-id="@hotel.Id" class="btn btn-sm btn-outline-primary">Manage rooms</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

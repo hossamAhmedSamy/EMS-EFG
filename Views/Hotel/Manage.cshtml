@@ -1,0 +1,100 @@
+@model EMS.ViewModels.HotelManageViewModel
+@{
+    ViewData["Title"] = Model.Hotel.Name;
+}
+
+<p><a asp-action="Index">&larr; All hotels</a></p>
+<div class="d-flex justify-content-between align-items-start mb-2">
+    <div>
+        <h1>@Model.Hotel.Name</h1>
+        @if (!string.IsNullOrEmpty(Model.Hotel.Address))
+        {
+            <p class="text-muted">@Model.Hotel.Address</p>
+        }
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Hotel.Id" class="btn btn-outline-secondary">Edit hotel</a>
+        <form asp-action="Delete" asp-route-id="@Model.Hotel.Id" method="post"
+              onsubmit="return confirm('Delete this hotel with all its rooms and slots?');">
+            <button type="submit" class="btn btn-outline-danger">Delete hotel</button>
+        </form>
+    </div>
+</div>
+
+<partial name="_StatusMessages" />
+
+<form asp-action="AddRoom" method="post" class="row g-2 align-items-end mb-4">
+    <input type="hidden" name="hotelId" value="@Model.Hotel.Id" />
+    <div class="col-auto">
+        <label class="form-label" for="roomName">New room</label>
+        <input class="form-control" id="roomName" name="roomName" placeholder="e.g. Room 1" required maxlength="50" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Add room</button>
+    </div>
+</form>
+
+@if (!Model.Hotel.Rooms.Any())
+{
+    <p class="text-muted">No rooms yet. Add the first one above.</p>
+}
+
+@foreach (var room in Model.Hotel.Rooms.OrderBy(r => r.Name))
+{
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="fw-semibold">@room.Name</span>
+            <div class="d-flex gap-2">
+                <a asp-action="EditRoom" asp-route-id="@room.Id" class="btn btn-sm btn-outline-secondary">Rename</a>
+                <form asp-action="DeleteRoom" asp-route-id="@room.Id" method="post"
+                      onsubmit="return confirm('Delete this room and all its slots?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete room</button>
+                </form>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (room.RoomSlots.Any())
+            {
+                <ul class="list-unstyled d-flex flex-wrap gap-2 mb-3">
+                @foreach (var slot in room.RoomSlots.OrderBy(s => s.StartTime))
+                {
+                    var reserved = Model.ReservedSlotIds.Contains(slot.Id);
+                    <li class="border rounded px-2 py-1 d-flex align-items-center gap-2">
+                        <span>@slot.StartTime.ToString("h:mm tt") – @slot.EndTime.ToString("h:mm tt")</span>
+                        @if (reserved)
+                        {
+                            <span class="badge text-bg-secondary">Reserved</span>
+                        }
+                        else
+                        {
+                            <form asp-action="RemoveSlot" method="post" class="d-inline">
+                                <input type="hidden" name="slotId" value="@slot.Id" />
+                                <button type="submit" class="btn btn-sm btn-link text-danger p-0 text-decoration-none" title="Remove slot">&times;</button>
+                            </form>
+                        }
+                    </li>
+                }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">No slots yet.</p>
+            }
+
+            <form asp-action="GenerateSlots" method="post" class="row g-2 align-items-end">
+                <input type="hidden" name="roomId" value="@room.Id" />
+                <div class="col-auto">
+                    <label class="form-label" for="from-@room.Id">From</label>
+                    <input type="time" class="form-control" id="from-@room.Id" name="from" required />
+                </div>
+                <div class="col-auto">
+                    <label class="form-label" for="to-@room.Id">To</label>
+                    <input type="time" class="form-control" id="to-@room.Id" name="to" required />
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-outline-primary">Add 1-hour slots</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}

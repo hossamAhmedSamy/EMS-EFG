@@ -1,0 +1,128 @@
+@model EMS.ViewModels.ReservationCreateViewModel
+@{
+    ViewData["Title"] = "New Reservation";
+}
+
+<p><a asp-action="Index">&larr; All reservations</a></p>
+<h1>New Reservation</h1>
+
+<partial name="_StatusMessages" />
+
+@* Steps 1-3 are a GET form: each choice reloads the page with the next step's options. *@
+<form asp-action="Create" method="get" class="row g-3 align-items-end mb-4">
+    <div class="col-md-4">
+        <label class="form-label" for="investorId">1. Investor</label>
+        <select class="form-select" id="investorId" name="investorId" onchange="this.form.submit()">
+            <option value="">Choose…</option>
+            @foreach (var investor in Model.Investors)
+            {
+                <option value="@investor.Id" selected="@(investor.Id == Model.InvestorId)">@investor.Name</option>
+            }
+        </select>
+    </div>
+
+    @if (Model.InvestorId != null)
+    {
+        <div class="col-md-3">
+            <label class="form-label" for="sectorId">2. Sector</label>
+            <select class="form-select" id="sectorId" name="sectorId" onchange="this.form.submit()">
+                <option value="">Choose…</option>
+                @foreach (var sector in Model.Sectors)
+                {
+                    <option value="@sector.Id" selected="@(sector.Id == Model.SectorId)">@sector.Name</option>
+                }
+            </select>
+        </div>
+    }
+
+    @if (Model.SectorId != null && Model.TimeOptions.Any())
+    {
+        <div class="col-md-3">
+            <label class="form-label" for="start">3. Time</label>
+            <select class="form-select" id="start" name="start" onchange="this.form.submit()">
+                <option value="">Choose…</option>
+                @foreach (var time in Model.TimeOptions)
+                {
+                    <option value="@time.Start.ToString("HH:mm")" selected="@(time == Model.Meeting)">@time</option>
+                }
+            </select>
+        </div>
+    }
+
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Next</button>
+    </div>
+</form>
+
+@if (Model.InvestorId != null)
+{
+    if (!Model.InvestorWindows.Any())
+    {
+        <div class="alert alert-warning">This investor has no sectors yet. Add time windows on the investor's page first.</div>
+    }
+    else
+    {
+        <p class="small text-muted mb-1">Investor availability:</p>
+        <p>
+            @foreach (var window in Model.InvestorWindows)
+            {
+                <span class="badge text-bg-light border me-1">
+                    @window.Sector!.Name: @window.StartTime.ToString("h:mm tt") – @window.EndTime.ToString("h:mm tt")
+                </span>
+            }
+        </p>
+    }
+}
+
+@if (Model.SectorId != null && !Model.TimeOptions.Any())
+{
+    <div class="alert alert-warning">
+        No meeting is possible in this sector: there is no free room slot that fits inside both this investor's
+        availability and any presenter's availability (or they are already booked at those times).
+    </div>
+}
+
+@if (Model.Meeting is { } meeting)
+{
+    <div class="card">
+        <div class="card-header fw-semibold">4. Presenter and room for @meeting</div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" class="row g-3 align-items-end">
+                <input type="hidden" name="investorId" value="@Model.InvestorId" />
+                <input type="hidden" name="sectorId" value="@Model.SectorId" />
+                <input type="hidden" name="start" value="@meeting.Start.ToString("HH:mm")" />
+
+                <div class="col-md-4">
+                    <label class="form-label" for="presenterId">Presenter</label>
+                    <select class="form-select" id="presenterId" name="presenterId" required>
+                        <option value="">Choose…</option>
+                        @foreach (var presenter in Model.Presenters)
+                        {
+                            <option value="@presenter.Id">@presenter.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label" for="roomSlotId">Available room</label>
+                    <select class="form-select" id="roomSlotId" name="roomSlotId" required>
+                        <option value="">Choose…</option>
+                        @foreach (var hotel in Model.Slots.GroupBy(s => s.Room!.Hotel!.Name))
+                        {
+                            <optgroup label="@hotel.Key">
+                                @foreach (var slot in hotel)
+                                {
+                                    <option value="@slot.Id">@slot.Room!.Name</option>
+                                }
+                            </optgroup>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">Confirm reservation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+}

@@ -1,0 +1,85 @@
+@model EMS.ViewModels.InvestorManageViewModel
+@{
+    ViewData["Title"] = Model.Investor.Name;
+}
+
+<p><a asp-action="Index">&larr; All investors</a></p>
+<div class="d-flex justify-content-between align-items-start mb-2">
+    <div>
+        <h1>@Model.Investor.Name</h1>
+        <p class="text-muted">Mobile: @Model.Investor.Mobile</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Investor.Id" class="btn btn-outline-secondary">Edit investor</a>
+        <form asp-action="Delete" asp-route-id="@Model.Investor.Id" method="post"
+              onsubmit="return confirm('Delete this investor and all their time windows?');">
+            <button type="submit" class="btn btn-outline-danger">Delete investor</button>
+        </form>
+    </div>
+</div>
+
+<partial name="_StatusMessages" />
+
+<h2 class="h5 mt-4">Sectors &amp; availability</h2>
+
+@if (!Model.Investor.Interests.Any())
+{
+    <p class="text-muted">No time windows yet. Add one below.</p>
+}
+else
+{
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>Sector</th>
+                <th>Available from</th>
+                <th>Available to</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var interest in Model.Investor.Interests.OrderBy(x => x.Sector!.Name).ThenBy(x => x.StartTime))
+        {
+            <tr>
+                <td>@interest.Sector!.Name</td>
+                <td>@interest.StartTime.ToString("h:mm tt")</td>
+                <td>@interest.EndTime.ToString("h:mm tt")</td>
+                <td class="text-end">
+                    <a asp-action="EditInterest" asp-route-id="@interest.Id" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <form asp-action="RemoveInterest" method="post" class="d-inline">
+                        <input type="hidden" name="interestId" value="@interest.Id" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<h2 class="h6 mt-4">Add a time window</h2>
+<p class="text-muted small">A sector can have several windows (e.g. 2–3 PM and 4–6 PM), as long as they don't overlap.</p>
+<form asp-action="AddInterest" method="post" class="row g-2 align-items-end">
+    <input type="hidden" name="investorId" value="@Model.Investor.Id" />
+    <div class="col-auto">
+        <label class="form-label" for="sectorId">Sector</label>
+        <select class="form-select" id="sectorId" name="sectorId" required>
+            <option value="">Choose…</option>
+            @foreach (var sector in Model.Sectors)
+            {
+                <option value="@sector.Id">@sector.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-auto">
+        <label class="form-label" for="from">From</label>
+        <input type="time" class="form-control" id="from" name="from" required />
+    </div>
+    <div class="col-auto">
+        <label class="form-label" for="to">To</label>
+        <input type="time" class="form-control" id="to" name="to" required />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Add window</button>
+    </div>
+</form>
